@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neon Coast Cover Studio — GTA-style cover art maker</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main class="studio">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">NC</span>
+      <div>
+        <h1>Neon Coast Cover Studio</h1>
+        <p>Turn any photo into multi-panel cover art. Everything stays on your machine.</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <div class="format-tabs" role="group" aria-label="Post size">
+        <button type="button" data-format="square">Square 1080 × 1080</button>
+        <button type="button" data-format="portrait">Portrait 1080 × 1350</button>
+        <button type="button" data-format="landscape" class="on">Wide 1920 × 1080</button>
+      </div>
+      <div class="history">
+        <button type="button" id="undo" title="Undo (Ctrl+Z)">↩ Undo</button>
+        <button type="button" id="redo" title="Redo (Ctrl+Shift+Z)">↪ Redo</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="stage-wrap">
+    <canvas id="stage" width="1920" height="1080" aria-label="Cover preview"></canvas>
+    <p class="stage-hint">Click a panel to select it, drag to reposition its photo, scroll to zoom. Click the hero to move the pop-out.</p>
+  </section>
+
+  <aside class="panel-rail">
+    <section class="card" id="card-photos">
+      <h2>1 · Photos</h2>
+      <label class="file-pick">Add your photos<input id="photo-files" type="file" accept="image/*" multiple></label>
+      <div class="tray" id="tray"></div>
+      <div class="row">
+        <button type="button" id="fill-all">One photo fills every panel</button>
+        <button type="button" id="cycle-photos">Spread photos across panels</button>
+      </div>
+      <p class="note">Selected panel: <strong id="selected-label">none</strong>. Pick a photo above to drop it into the selected panel.</p>
+    </section>
+
+    <section class="card" id="card-layout">
+      <h2>2 · Layout &amp; grade</h2>
+      <div class="layout-grid" id="layout-grid"></div>
+      <h3>Colour grade</h3>
+      <div class="grade-grid" id="grade-grid"></div>
+    </section>
+
+    <section class="card" id="card-words">
+      <h2>3 · Lettering</h2>
+      <label>Headline <input id="headline" type="text" maxlength="18" value="NEON COAST"></label>
+      <label>Neon subtitle <input id="subtitle" type="text" maxlength="30" value="Sunset Heist"></label>
+      <label>Callout line <input id="callout" type="text" maxlength="34" value="ONE CITY. NO BRAKES."></label>
+      <label class="heat-row">Heat level
+        <span class="stars" id="heat-stars">
+          <button type="button" data-heat="1">★</button>
+          <button type="button" data-heat="2">★</button>
+          <button type="button" data-heat="3">★</button>
+          <button type="button" data-heat="4">★</button>
+          <button type="button" data-heat="5">★</button>
+        </span>
+      </label>
+      <label>Badge ribbon <input id="badge" type="text" maxlength="14" value="WANTED"></label>
+      <div class="row">
+        <label class="grow">Tag one <input id="tag-a" type="text" maxlength="12" value="DRIVER"></label>
+        <label class="grow">Tag two <input id="tag-b" type="text" maxlength="12" value="WHEELMAN"></label>
+      </div>
+    </section>
+
+    <section class="card" id="card-hero">
+      <h2>4 · Pop-out hero</h2>
+      <div class="row">
+        <label class="grow">Hero photo
+          <select id="hero-photo"></select>
+        </label>
+        <label class="grow">Cut-out style
+          <select id="hero-mode">
+            <option value="chroma">Colour key</option>
+            <option value="silhouette">Ink silhouette</option>
+            <option value="off">Off</option>
+          </select>
+        </label>
+      </div>
+      <canvas id="hero-preview" width="360" height="240" aria-label="Hero cut-out preview"></canvas>
+      <p class="note">Colour key: click the preview to pick the backdrop colour to remove. Ink silhouette needs one click and works on any photo.</p>
+      <label>Tolerance <input id="hero-tol" type="range" min="10" max="220" value="96"></label>
+      <label>Edge feather <input id="hero-feather" type="range" min="2" max="80" value="26"></label>
+      <label>Hero size <input id="hero-scale" type="range" min="60" max="170" value="112"></label>
+      <div class="row">
+        <button type="button" id="hero-key-sky">Key the top-left sky</button>
+        <button type="button" id="hero-center">Re-centre hero</button>
+      </div>
+    </section>
+
+    <section class="card" id="card-export">
+      <h2>5 · Export</h2>
+      <label class="slider-row">Film grain <input type="range" id="finish-grain" min="0" max="200" value="100"></label>
+      <label class="slider-row">Vignette <input type="range" id="finish-vignette" min="0" max="200" value="100"></label>
+      <button type="button" id="export-one" class="big-export">Export this size as PNG</button>
+      <button type="button" id="export-all" class="big-export alt">Export all three sizes</button>
+      <p id="status" role="status"></p>
+    </section>
+  </aside>
+</main>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
